@@ -9,7 +9,8 @@ const int userInput = 250;
 char * hex; //Initializing
 
 int main(void){
-        printf("Hello World!\n\n");
+        
+printf("Hello World!\n\n");
 
         int decimal = getSpreaded16Bit(userInput);
         printf("A 16 bit decimal: %d\n", userInput);
@@ -22,9 +23,11 @@ int main(void){
 
         printf("decimal in hex: %x\n", decimal);
 
-        int word1 = decimal >> 8;
-        int word2 = decimal - word1; //change this later
-        printf("word in hex: %x\n", word1);
+
+        int word1 = decimal >> 8; //change this later
+        int word2 = decimal - word1;
+        printf("word1 in hex: %x\n", word1);
+        printf("word2 in hex: %x\n", word2);
 
         data[1] = word1;
         data[2] = word2;
