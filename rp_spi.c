@@ -36,8 +36,8 @@ void startDAC(int value, int dacChannel);
 
 
 int bufferSize = 3;
-char data[3]; // = {0x19, 0x9f, 0xff}; //0001 1001 XXXXXXXXXXXXXXXX
-
+//char data[3]; // = {0x19, 0x9f, 0xff}; //0001 1001 XXXXXXXXXXXXXXXX
+char data[3] = {0x19, 0xf0, 0x00};
 
 
 
@@ -47,7 +47,28 @@ int spi_fd = -1;
 //int main(){
 //int  startDAC(char *myData){
 void startDAC(int value, int dacChannel){
-        convertDACInt2ArryHex(value, dacChannel);
+        if(dacChannel == 1){
+                data[0] = 0x11;
+                if(data[1] == 0xff){
+                        data[1] = 0x00;
+                        data[2] = 0x00;
+                }
+                else{
+                        data[1] = 0xff;
+                        data[2] = 0xff;
+                }
+        }
+        else if(dacChannel == 2){
+                data[0] = 0x18;
+                if(data[1] == 0xff){
+                        data[1] = 0x00;
+                        data[2] = 0x00;
+                }
+                else{
+                        data[1] = 0xff;
+                        data[2] = 0xff;
+                }
+        }
 //      char *data = myData;
 //      printf("Welcome to rp_spi, attempting to communicate with SPI protocol...\n\n");
 
