@@ -26,13 +26,20 @@
 #include <linux/spi/spidev.h>
 #include <linux/types.h>
 
+
+
+#include "powThis.c"
+#include "fullScale.c"
+#include "dec2hex.c"
+
+
 /* Inline functions definition */
 static int init_spi();
 static int release_spi();
-//static int read_flash_id(int fd);
+static int read_flash_id(int fd);
 static int write_spi(char *write_data, int size);
-void convertDACInt2ArryHex(int value, int channel);
 void startDAC(int value, int dacChannel);
+
 
 
 int bufferSize = 3;
@@ -47,16 +54,17 @@ int spi_fd = -1;
 //int main(){
 //int  startDAC(char *myData){
 void startDAC(int value, int dacChannel){
+        int decimal = getSpreaded16Bit(value); //Spreads the userinput in 16 bits
+        char * hexData = (char *) malloc(sizeof(char) * 5);
+        hexData = gethex(decimal); //hexData's 0 - 3 has our data
+        //Concatenate hexData[0] & hexData[1] into data[1]
+
+        //Concatenate hexData[2] & hexData[3] into data[2]
+
+
         if(dacChannel == 1){
                 data[0] = 0x11;
-                if(data[1] == 0xff){
-                        data[1] = 0x00;
-                        data[2] = 0x00;
-                }
-                else{
-                        data[1] = 0xff;
-                        data[2] = 0xff;
-                }
+
         }
         else if(dacChannel == 2){
                 data[0] = 0x18;
