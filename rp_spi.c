@@ -44,7 +44,7 @@ void startDAC(int value, int dacChannel);
 
 int bufferSize = 3;
 //char data[3]; // = {0x19, 0x9f, 0xff}; //0001 1001 XXXXXXXXXXXXXXXX
-char data[3] = {0x19, 0xf0, 0x00};
+char data[3] = {0x19, 0x00, 0x00};
 
 
 
@@ -54,13 +54,27 @@ int spi_fd = -1;
 //int main(){
 //int  startDAC(char *myData){
 void startDAC(int value, int dacChannel){
+//      printf("Original Data Values: %x, %x, %x\n", data[0], data[1], data[2]);
         int decimal = getSpreaded16Bit(value); //Spreads the userinput in 16 bits
-        char * hexData = (char *) malloc(sizeof(char) * 5);
-        hexData = gethex(decimal); //hexData's 0 - 3 has our data
+//      char * hexData = (char *) malloc(sizeof(char) * 5); //Making space
+//      hexData = gethex(decimal);                          //Fetching the Data
+        int word1 = decimal >> 8;
+        int word2 = decimal - word1;
+        data[1] = word1;
+        data[2] = word2;
+//      printf("Data[1]: %x\n", data[1]);
+//      printf("Data[2]: %x\n", data[2]);
+//      printf("End of conversion\n");
+        //Make a temp char * with 0x as prefix
+//      char * prefix = "0x";
+
         //Concatenate hexData[0] & hexData[1] into data[1]
+//      strcat(prefix, (char)hexData[0]);
+//      strcat(prefix, (char)hexData[1]);
+
 
         //Concatenate hexData[2] & hexData[3] into data[2]
-
+//      strcat((char*)hexData[2], (char*)hexData[3]);
 
         if(dacChannel == 1){
                 data[0] = 0x11;
@@ -68,14 +82,6 @@ void startDAC(int value, int dacChannel){
         }
         else if(dacChannel == 2){
                 data[0] = 0x18;
-                if(data[1] == 0xff){
-                        data[1] = 0x00;
-                        data[2] = 0x00;
-                }
-                else{
-                        data[1] = 0xff;
-                        data[2] = 0xff;
-                }
         }
 //      char *data = myData;
 //      printf("Welcome to rp_spi, attempting to communicate with SPI protocol...\n\n");
